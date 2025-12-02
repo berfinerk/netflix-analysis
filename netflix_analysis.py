@@ -326,10 +326,28 @@ sns.barplot(x=top10_shows.values, y=top10_shows.index, ax=ax[1])
 ax[1].set_title("En çok Dizi Üreten Ülkeler")
 ax[1].set_xlabel("Dizi Sayısı")
 
+# plt.tight_layout()
+# plt.show()
+
+#Ülke-Tür ilişkisi için heatmap ısı haritası
+
+#ülke-tür matrisi
+country_genre_matrix = df_netflix_country.pivot_table(
+    index="country",
+    values =categories, #drama,action vb tür
+    aggfunc="sum"
+)
+#en çok içeriği olan ilk 10 ülke
+top10_countries = df_netflix_country.country.value_counts().head(10).index
+country_genre_top10 = country_genre_matrix.loc[top10_countries]
+
+plt.figure(figsize = (14,6))
+sns.heatmap(country_genre_top10, cmap="Reds", annot=True, fmt="d")
+plt.title("En Çok İçerik Üreten İlk 10 Ülkenin Tür Dağılımı Isı Haritası")
+plt.xlabel("Tür")
+plt.ylabel("Ülke")
 plt.tight_layout()
 plt.show()
-
-
 
 
 
