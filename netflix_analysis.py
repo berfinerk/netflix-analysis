@@ -15,7 +15,6 @@ df_netflix = pd.read_sql_query("SELECT * FROM netflix WHERE listed_in IS NOT NUL
 conn.close()
 # print(df_netflix.shape)
 # print(df_netflix.head(5))
-# print(len(df_netflix))
 
 #EDA VE FEATURE
 #eksik değerler
@@ -28,17 +27,14 @@ df_netflix["country"] = df_netflix["country"].fillna("Unknown")
 df_netflix["date_added"] = df_netflix["date_added"].fillna("Unknown")
 df_netflix["rating"] = df_netflix["rating"].fillna(0)
 df_netflix["duration"] = df_netflix["duration"].fillna(0)
-
 #kontol
-# print(df_netflix["director"].isna().sum()) #0 olmalı
-# print(df_netflix["cast"].isna().sum())
-# print(df_netflix["country"].isna().sum())
 # print(df_netflix.isnull().sum())
 
 #listed_in_split sütunundaki benzersiz türler
 # unique_genres = df_netflix['listed_in'].unique()
 # print("Toplam farklı tür sayısı:", len(unique_genres))
 # print("Türler:",unique_genres)
+
 
 #toplam tür sayısı
 # Tüm türleri virgülle ayır
@@ -117,6 +113,7 @@ df_netflix["listed_in"] = df_netflix["listed_in"].str.split(', ')
 df_netflix["genre_group"] = df_netflix["listed_in"].apply(
     lambda genres: [genre_map[g] for g in genres if g in genre_map]
 )
+# print(df_netflix[["listed_in", "genre_group"]].head())
 
 
 categories = ["Action", "Comedy", "Drama", "Thriller", "Romance",
@@ -133,10 +130,10 @@ for index, row in df_netflix.iterrows():
 
 #kontrol : ilk 5 satır
 # print(df_netflix[categories].head())
-# print(df_netflix["Drama"].sum())
 
 genre_counts = df_netflix[categories].sum().sort_values(ascending=False)
 # print(genre_counts)
+
 #grafik boyutları
 plt.figure(figsize = (12,6))
 #çubuk grafik
@@ -150,9 +147,7 @@ plt.xticks(rotation=45, ha='right')
 
 #grafiği götser
 # plt.tight_layout()
-# plt.show() Netflix’te en popüler tür: Drama
-# Belgesel ve Çocuk içerikleri daha az üretilmiş
-# Aksiyon ve Komedi orta seviyede
+# plt.show()
 
 
 #sütunlar arasındaki kolerasyonu hesaplayarak, iki türün bir içerikte birlikte görülme sıklığını ölçebiliriz.
@@ -196,7 +191,8 @@ plt.xlabel("Bir İçerikte Bulunan Tür Sayısı")
 plt.ylabel("İçerik Sayısı")
 plt.title("Netflix Çok Türlü İçeriklerin Dağılımı")
 plt.xticks(multi_genre_counts.index)
-#plt.show()#Tek tür içeren içerikler en yaygın.2 tür barındıran içerikler de oldukça fazla.3+ tür barındıran içerikler daha nadir.
+#plt.show()#2 tür içeren içerikler en yaygın.1 tür ve3+ tür barındıran hemen hemen aynı düzeydedir. içerikler de oldukça fazla.3+ tür barındıran içerikler daha nadir.
+
 
 #yıllara göre tür trendleri
 
@@ -220,7 +216,7 @@ plt.grid(True)
 # plt.show()
 
 #süreye göre tür analizi
-print(df_netflix["duration"].head(20))
+# print(df_netflix["duration"].head(20))
 
 def parse_duration(duration):
     if pd.isna(duration) or duration == 0:
@@ -236,7 +232,7 @@ def parse_duration(duration):
 df_netflix['duration_num'] = df_netflix['duration'].apply(parse_duration)
 
 #kontrol: ilk 20 değer
-print(df_netflix[["duration","duration_num"]].head(20))
+# print(df_netflix[["duration","duration_num"]].head(20))
 
 #film ve dizi ayırma
 df_movies = df_netflix[df_netflix["type"] == "Movie"]
@@ -245,6 +241,7 @@ df_tvshows = df_netflix[df_netflix["type"] == "TV Show"]
 #kontrol
 # print("Film sayısı:" , len(df_movies))
 # print("Dizi Sayısı", len(df_tvshows))
+
 
 #film türlerine göre ortalama süre
 
@@ -255,8 +252,8 @@ for cat in categories:
 
 avg_duration_movies = pd.Series(avg_duration_movies).sort_values(ascending=False)
 avg_duration_movies_int = avg_duration_movies.round(0).astype(int)
-print("--- Film Türleri Ortalama Süre (Dakika) ---")
-print(avg_duration_movies_int)
+# print("--- Film Türleri Ortalama Süre (Dakika) ---")
+# print(avg_duration_movies_int)
 
 avg_duration_tv = {}
 for cat in categories:
@@ -264,8 +261,8 @@ for cat in categories:
 
 avg_duration_tv =pd.Series(avg_duration_tv).sort_values(ascending=False)
 avg_duration_tv_int = avg_duration_tv.fillna(0).round(0).astype(int)
-print("--- TV Show Türleri Ortalama Süre (Sezon Sayısı) ---")
-print(avg_duration_tv_int)
+# print("--- TV Show Türleri Ortalama Süre (Sezon Sayısı) ---")
+# print(avg_duration_tv_int)
 
 #film
 plt.figure(figsize = (12,6))
@@ -275,7 +272,7 @@ plt.xlabel("Tür")
 plt.ylabel("Ortalama Dakika")
 plt.xticks(rotation=45, ha='right')
 plt.tight_layout()
-plt.show()
+# plt.show()
 
 #dizi
 plt.figure(figsize = (12,6))
@@ -285,7 +282,7 @@ plt.xlabel("Tür")
 plt.ylabel("Ortalama Sezon")
 plt.xticks(rotation=45, ha='right')
 plt.tight_layout()
-plt.show()
+# plt.show()
 
 
 

@@ -54,12 +54,12 @@ ORDER BY desc_length DESC
 LIMIT 5;
 """
 df=pd.read_sql_query(query,conn)
-# print(df)
+print(df)
 # print("*******************************************")
 
-pd.set_option('display.max_columns', None)
-pd.set_option('display.max_colwidth', None)
-# print(df.head(5))
+# pd.set_option('display.max_columns', None)
+# pd.set_option('display.max_colwidth', None)
+# # print(df.head(5))
 #
 # print("*******************************************")
 
