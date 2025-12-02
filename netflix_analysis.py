@@ -329,7 +329,7 @@ ax[1].set_xlabel("Dizi Sayısı")
 # plt.tight_layout()
 # plt.show()
 
-#Ülke-Tür ilişkisi için heatmap ısı haritası
+#  ısı haritası
 
 #ülke-tür matrisi
 country_genre_matrix = df_netflix_country.pivot_table(
