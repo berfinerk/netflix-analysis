@@ -285,7 +285,20 @@ plt.tight_layout()
 # plt.show()
 
 
+#datframe her satırda 1 ülke içersin
 
+#country kolonunu temizle
+df_netflix['country'] = df_netflix['country'].fillna('Unknown')
+df_netflix['country'] = df_netflix['country'].astype(str)
+df_netflix['country'] = df_netflix['country'].replace("", "Unknown")
+
+#ülke split + explode
+df_netflix_country = df_netflix.assign(
+    country=df_netflix['country'].str.split(', ')
+).explode('country')
+print(df_netflix_country.head())
+print("\n--- COUNTRY EXPLODE SONRASI ---")
+print(df_netflix_country[['show_id', 'title', 'country']].head(20))
 
 
 
