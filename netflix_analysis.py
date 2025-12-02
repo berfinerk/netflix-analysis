@@ -294,12 +294,18 @@ df_netflix['country'] = df_netflix['country'].replace("", "Unknown")
 
 #ülke split + explode
 df_netflix_country = df_netflix.assign(
-    country=df_netflix['country'].str.split(', ')
+    country=df_netflix['country'].str.split(',     ')
 ).explode('country')
-print(df_netflix_country.head())
-print("\n--- COUNTRY EXPLODE SONRASI ---")
-print(df_netflix_country[['show_id', 'title', 'country']].head(20))
+# print(df_netflix_country.head())
+# print("\n--- COUNTRY EXPLODE SONRASI ---")
+# print(df_netflix_country[['show_id', 'title', 'country']].head(20))
 
+#en çok içerik üreten 10 ülke(film dizi karışık)
+top10 = df_netflix_country['country'].value_counts().head(10)
 
-
-
+plt.figure(figsize = (12,6))
+sns.barplot(x=top10.values,y=top10.index)
+plt.title("En çok içerik üreten ilk 10 ülke")
+plt.xlabel("İçerik Sayısı")
+plt.ylabel("Ülke")
+# plt.show()
