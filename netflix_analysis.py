@@ -309,3 +309,35 @@ plt.title("En çok içerik üreten ilk 10 ülke")
 plt.xlabel("İçerik Sayısı")
 plt.ylabel("Ülke")
 # plt.show()
+
+#film ve dizi ayrı ayrı ülke analizi
+movies = df_netflix_country[df_netflix_country["type"] == "Movie"]
+top10_movies = movies['country'].value_counts().head(10)
+#diziler
+shows = df_netflix_country[df_netflix_country["type"] == "TV Show"]
+top10_shows = shows['country'].value_counts().head(10)
+#yan yana grafik
+fig, ax = plt.subplots(1,2,figsize=(12,6))
+sns.barplot(x=top10_movies.values, y=top10_movies.index, ax=ax[0])
+ax[0].set_title("En çok Film üreten Ülkeler")
+ax[0].set_xlabel("Film Sayısı")
+
+sns.barplot(x=top10_shows.values, y=top10_shows.index, ax=ax[1])
+ax[1].set_title("En çok Dizi Üreten Ülkeler")
+ax[1].set_xlabel("Dizi Sayısı")
+
+plt.tight_layout()
+plt.show()
+
+
+
+
+
+
+
+
+
+
+
+
+
