@@ -417,7 +417,7 @@ for director_name in df_known_directors['director'].unique():
 #dataframe oluştur
 director_top_genre_df = pd.DataFrame(results)
 #ilk 10 yönetmeni göster
-print(director_top_genre_df.sort_values(by='content_count', ascending=False).head(10))
+# print(director_top_genre_df.sort_values(by='content_count', ascending=False).head(10))
 
 #en çok içerik üreten 10 yönetmeni al
 top10_directors = director_top_genre_df.sort_values('content_count', ascending=False).head(10)
@@ -441,6 +441,71 @@ plt.ylabel("Yönetmen")
 plt.legend(title="Top Tür")
 # plt.tight_layout()
 # plt.show()
+
+#en popüler oyuncular
+#bilinmeyen oyuncuları filtrele
+df_known_cast = df_netflix[df_netflix['cast'] != 'Unknown']
+
+#cast sütununu explode et
+df_cast = df_known_cast.copy()
+df_cast['cast'] = df_cast['cast'].str.split(',')
+df_cast = df_cast.explode('cast')
+
+#oyuncu başına içerik sayısı
+cast_count = df_cast['cast'].value_counts().head(20)
+# print(cast_count)
+
+plt.figure(figsize = (12,6))
+sns.barplot(x=cast_count.values,y=cast_count.index,palette="viridis")
+plt.title("En Popüler İlk 20 Oyuncu (İçerik Sayısına Göre)")
+plt.xlabel("İçerik Sayısı")
+plt.ylabel("Oyuncu")
+plt.tight_layout()
+# plt.show()
+
+#oyuncuların en çok oynadığı türler
+results = []
+for actor in df_cast['cast'].unique():
+    actor_contents = df_cast[df_cast['cast'] == actor]
+    genre_counts = actor_contents[categories].sum()
+    top_genre = genre_counts.idxmax()
+    count = genre_counts.max()
+    results.append({
+        'actor': actor,
+        'top_genre': top_genre,
+        'content_count': count,
+    })
+actor_top_genre_df = pd.DataFrame(results)
+#en popüler 10 oyuncu al
+top10_actors = actor_top_genre_df.sort_values('content_count', ascending=False).head(10)
+top10_actors = top10_actors.sort_values('content_count', ascending=True)
+# print(top10_actors)
+
+plt.figure(figsize = (12,6))
+sns.barplot(
+    x='content_count',
+    y='actor',
+    data=top10_actors,
+    hue='top_genre', dodge=False, palette="tab10"
+)
+plt.title("En Popüler 10 Oyuncu ve En Çok Yer Aldıkları Tür")
+plt.xlabel("İçerik Sayısı")
+plt.ylabel("Oyuncu")
+plt.legend(title="Top Tür")
+plt.tight_layout()
+# plt.show()
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
