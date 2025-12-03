@@ -329,7 +329,7 @@ ax[1].set_xlabel("Dizi Sayısı")
 # plt.tight_layout()
 # plt.show()
 
-#  ısı haritası
+#   ısı haritası
 
 #ülke-tür matrisi
 country_genre_matrix = df_netflix_country.pivot_table(
@@ -347,13 +347,100 @@ plt.title("En Çok İçerik Üreten İlk 10 Ülkenin Tür Dağılımı Isı Hari
 plt.xlabel("Tür")
 plt.ylabel("Ülke")
 plt.tight_layout()
-plt.show()
+# plt.show()
+
+#yönetmen başına içerik sayısı
+
+#eksik yönetmenleri doldur
+df_netflix['director'] = df_netflix['director'].fillna('Bilinmiyor')
+
+#yönetmenleri listeye çevir
+df_director = df_netflix.copy()
+df_director['director'] = df_director['director'].str.split(', ')
+
+#her yönetmeni aynı satıra aç
+df_director = df_director.explode('director')
+
+#yönetmen başına içerik sayısı
+director_count = df_director['director'].value_counts().reset_index()
+director_count.columns = ['director', 'content_count']
+
+# print(director_count.head(10))
+#Daha çok şöyle bir bilgi olur:
+# “Veri setinde yönetmen bilgisi %X oranında eksik olduğu için yönetmen bazlı analiz sınırlıdır.”
+# “Yine de mevcut veriler içinde en çok içerik üreten birkaç yönetmen şunlardır…”
 
 
+#yönetmeni bilinmeyen içerikler hangi türlerde daha fazla
+
+#unknown olanları filtrele
+unknown_df = df_netflix[df_netflix['director'] == 'Unknown']
+#listed_in sütununu explode et( zaten split edilmiş, ama explode gerekli
+unknown_df_exploded = unknown_df.explode('listed_in')
+#en çpk görülen türler(top10)
+top_unknown_genres =unknown_df_exploded['listed_in'].value_counts().head(10)
+# print("Yönetmeni bilinmeyen içeriklerde en çok görülen türler:")
+# print(top_unknown_genres)
+
+#grafik ile göster
+plt.figure(figsize = (10,5))
+sns.barplot(x=top_unknown_genres.values, y=top_unknown_genres.index,palette = "viridis")
+plt.title("Yönetmeni Bilinmeyen İçeriklerde En Çok Görülen Türler")
+plt.xlabel("İçerik Sayısı")
+plt.ylabel("Tür")
+plt.tight_layout()
+# plt.show()
+
+#Grafik veya tablo yorumunu buna göre açıkla:
+# “Sadece yönetmen bilgisi olan içerikler üzerinden analiz yapılmıştır.”
+
+#bilinmeyen yönetmenleri çıkar
+df_known_directors = df_director[df_director['director'] != 'Unknown']
+#her yönetmenin en çok içerik ürettiği türü bul
+results = []
+for director_name in df_known_directors['director'].unique():
+    #bu yönetmenin tüm içerikleri
+    director_contents = df_known_directors[df_known_directors['director'] == director_name]
+
+    #tür bazında toplam içerik sayısı
+    genre_counts = director_contents[categories].sum()
+
+    #en çok içerik ürettiği tür
+    top_genre = genre_counts.idxmax()
+    count = genre_counts.max()
+
+    results.append({
+        'director': director_name,
+        'top_genre': top_genre,
+        'content_count': count,
+    })
+#dataframe oluştur
+director_top_genre_df = pd.DataFrame(results)
+#ilk 10 yönetmeni göster
+print(director_top_genre_df.sort_values(by='content_count', ascending=False).head(10))
+
+#en çok içerik üreten 10 yönetmeni al
+top10_directors = director_top_genre_df.sort_values('content_count', ascending=False).head(10)
+top10_directors = top10_directors.sort_values('content_count', ascending=True)#yatay bar için
 
 
+plt.figure(figsize = (12,6))
+sns.barplot(
+    x='content_count',
+    y='director',
+    data=top10_directors,
+    hue='top_genre',  # sadece en yüksek tür
+    dodge=False,  # tek bar
+    palette="tab10"
 
-
+)
+#başlık ve etiketler
+plt.title("Top 10 Yönetmenin En Çok Ürettiği Tür ve İçerik Sayısı")
+plt.xlabel("İçerik Sayısı")
+plt.ylabel("Yönetmen")
+plt.legend(title="Top Tür")
+# plt.tight_layout()
+# plt.show()
 
 
 
