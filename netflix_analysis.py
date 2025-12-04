@@ -558,7 +558,7 @@ plt.show()
 
 # YILLARA GÖRE RATING TRENDLERİ
 
-df_recent = df_netflix[df_netflix['release_year'] >= 1990]
+df_recent = df_netflix[df_netflix['release_year'] >= 2000]
 
 plt.figure(figsize=(14, 7))
 sns.countplot(
@@ -567,7 +567,7 @@ sns.countplot(
     data=df_recent,
     palette="tab10"
 )
-plt.title('1990 Sonrası Yıllara Göre Rating Dağılımları')
+plt.title('2000 Sonrası Yıllara Göre Rating Dağılımları')
 plt.xlabel('Yıl')
 plt.ylabel('İçerik Sayısı')
 plt.xticks(rotation=45)
