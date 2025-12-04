@@ -135,15 +135,15 @@ genre_counts = df_netflix[categories].sum().sort_values(ascending=False)
 # print(genre_counts)
 
 #grafik boyutları
-plt.figure(figsize = (12,6))
-#çubuk grafik
-plt.bar(genre_counts.index, genre_counts.values)
+# plt.figure(figsize = (12,6))
+# #çubuk grafik
+# plt.bar(genre_counts.index, genre_counts.values)
 
-#başlık ve etiketler
-plt.title("Netflix Tür Frekans Analizi")
-plt.xlabel("Türler")
-plt.ylabel("Frekans")
-plt.xticks(rotation=45, ha='right')
+# #başlık ve etiketler
+# plt.title("Netflix Tür Frekans Analizi")
+# plt.xlabel("Türler")
+# plt.ylabel("Frekans")
+# plt.xticks(rotation=45, ha='right')
 
 #grafiği götser
 # plt.tight_layout()
@@ -153,67 +153,67 @@ plt.xticks(rotation=45, ha='right')
 #sütunlar arasındaki kolerasyonu hesaplayarak, iki türün bir içerikte birlikte görülme sıklığını ölçebiliriz.
 #kolerasyon matrisi hesaplama
 #df_netflix'in sadece kategori sütunlarını kullanarak korelasyonu hesaplarız.Bu matris, türlerin birbiriyle ne kadar sık yan yana geldiğini gösterir.
-correlation_matrix = df_netflix[categories].corr()
+# correlation_matrix = df_netflix[categories].corr()
 
 # print("\n--- Türler Arası Korelasyon Matrisi ---")
 # print(correlation_matrix)
 
 # --- Isı Haritası Görselleştirmesi ---
 
-#grafik boyutunu ayarla
-plt.figure(figsize = (10,8))
+# #grafik boyutunu ayarla
+# plt.figure(figsize = (10,8))
 
-#ısı haritasını oluşturma
-sns.heatmap(
-    correlation_matrix, #hesaplanan korelasyon matrisi
-    annot=True, #korelasyon değerlerini hücrelerin içine yaz
-    fmt=".2f",           # Sayıları iki ondalık basamakla göster
-    cmap='coolwarm',     # Renk paleti: Mavi (Negatif) ve Kırmızı (Pozitif) ilişkileri ayırır.
-    linewidths=.5,       # Hücreler arasına çizgi ekle
-    cbar_kws={'label': 'Korelasyon Değeri'} # Renk çubuğu etiketi
-)
-#başlık ayarla
-plt.title("Netflix Türleri Arası Birliktelik (Korelasyon) Isı Haritası")
-
-#eksen ayarları
-plt.xticks(rotation=45, ha='right')
-plt.yticks(rotation=0)
-plt.tight_layout()
-# plt.show()
+# #ısı haritasını oluşturma
+# sns.heatmap(
+#     correlation_matrix, #hesaplanan korelasyon matrisi
+#     annot=True, #korelasyon değerlerini hücrelerin içine yaz
+#     fmt=".2f",           # Sayıları iki ondalık basamakla göster
+#     cmap='coolwarm',     # Renk paleti: Mavi (Negatif) ve Kırmızı (Pozitif) ilişkileri ayırır.
+#     linewidths=.5,       # Hücreler arasına çizgi ekle
+#     cbar_kws={'label': 'Korelasyon Değeri'} # Renk çubuğu etiketi
+# )
+# #başlık ayarla
+# plt.title("Netflix Türleri Arası Birliktelik (Korelasyon) Isı Haritası")
+#
+# #eksen ayarları
+# plt.xticks(rotation=45, ha='right')
+# plt.yticks(rotation=0)
+# plt.tight_layout()
+# # plt.show()
 
 #kaç film birden fazla türe sahip
 df_netflix["genre_count"] = df_netflix[categories].sum(axis=1)
 multi_genre_counts = df_netflix["genre_count"].value_counts().sort_index()
 
-plt.figure(figsize = (8,5))
-plt.bar(multi_genre_counts.index, multi_genre_counts.values)
-plt.xlabel("Bir İçerikte Bulunan Tür Sayısı")
-plt.ylabel("İçerik Sayısı")
-plt.title("Netflix Çok Türlü İçeriklerin Dağılımı")
-plt.xticks(multi_genre_counts.index)
-#plt.show()#2 tür içeren içerikler en yaygın.1 tür ve3+ tür barındıran hemen hemen aynı düzeydedir. içerikler de oldukça fazla.3+ tür barındıran içerikler daha nadir.
+# plt.figure(figsize = (8,5))
+# plt.bar(multi_genre_counts.index, multi_genre_counts.values)
+# plt.xlabel("Bir İçerikte Bulunan Tür Sayısı")
+# plt.ylabel("İçerik Sayısı")
+# plt.title("Netflix Çok Türlü İçeriklerin Dağılımı")
+# plt.xticks(multi_genre_counts.index)
+# #plt.show()#2 tür içeren içerikler en yaygın.1 tür ve3+ tür barındıran hemen hemen aynı düzeydedir. içerikler de oldukça fazla.3+ tür barındıran içerikler daha nadir.
 
 
 #yıllara göre tür trendleri
 
-df_year_genre = df_netflix.groupby("release_year")[categories].sum()
-plt.figure(figsize = (14,6))
-plt.plot(df_year_genre.index, df_year_genre["Drama"])
-plt.title("YıılaraGöre Drama İçerik Sayıları")
-plt.xlabel("Yıl")
-plt.ylabel("Drama İçerik Sayısı")
-# plt.show()
+# df_year_genre = df_netflix.groupby("release_year")[categories].sum()
+# plt.figure(figsize = (14,6))
+# plt.plot(df_year_genre.index, df_year_genre["Drama"])
+# plt.title("YıılaraGöre Drama İçerik Sayıları")
+# plt.xlabel("Yıl")
+# plt.ylabel("Drama İçerik Sayısı")
+# # plt.show()
+#
+# plt.figure(figsize = (14,7))
+# for cat in categories:
+#     plt.plot(df_year_genre.index, df_year_genre[cat],label=cat)
 
-plt.figure(figsize = (14,7))
-for cat in categories:
-    plt.plot(df_year_genre.index, df_year_genre[cat],label=cat)
-
-plt.title("Yıllara Göre Netflix Tür Üretim Trendleri")
-plt.xlabel("Yıl")
-plt.ylabel("İçerik Sayısı")
-plt.legend()
-plt.grid(True)
-# plt.show()
+# plt.title("Yıllara Göre Netflix Tür Üretim Trendleri")
+# plt.xlabel("Yıl")
+# plt.ylabel("İçerik Sayısı")
+# plt.legend()
+# plt.grid(True)
+# # plt.show()
 
 #süreye göre tür analizi
 # print(df_netflix["duration"].head(20))
@@ -265,25 +265,26 @@ avg_duration_tv_int = avg_duration_tv.fillna(0).round(0).astype(int)
 # print(avg_duration_tv_int)
 
 #film
-plt.figure(figsize = (12,6))
-avg_duration_movies_int.plot(kind="bar",color="skyblue")
-plt.title("Film Türlerine Göre Ortalama Süre (Dakika)")
-plt.xlabel("Tür")
-plt.ylabel("Ortalama Dakika")
-plt.xticks(rotation=45, ha='right')
-plt.tight_layout()
-# plt.show()
+# plt.figure(figsize = (12,6))
+# avg_duration_movies_int.plot(kind="bar",color="skyblue")
+# plt.title("Film Türlerine Göre Ortalama Süre (Dakika)")
+# plt.xlabel("Tür")
+# plt.ylabel("Ortalama Dakika")
+# plt.xticks(rotation=45, ha='right')
+# plt.tight_layout()
+# # plt.show()
 
 #dizi
-plt.figure(figsize = (12,6))
-avg_duration_tv.plot(kind="bar",color="skyblue")
-plt.title("Dizi Türlerine Göre Ortalama Süre (Sezon)")
-plt.xlabel("Tür")
-plt.ylabel("Ortalama Sezon")
-plt.xticks(rotation=45, ha='right')
-plt.tight_layout()
-# plt.show()
+# plt.figure(figsize = (12,6))
+# avg_duration_tv.plot(kind="bar",color="skyblue")
+# plt.title("Dizi Türlerine Göre Ortalama Süre (Sezon)")
+# plt.xlabel("Tür")
+# plt.ylabel("Ortalama Sezon")
+# plt.xticks(rotation=45, ha='right')
+# plt.tight_layout()
+# # plt.show()
 
+# ************************************************
 
 #datframe her satırda 1 ülke içersin
 
@@ -294,7 +295,7 @@ df_netflix['country'] = df_netflix['country'].replace("", "Unknown")
 
 #ülke split + explode
 df_netflix_country = df_netflix.assign(
-    country=df_netflix['country'].str.split(',     ')
+    country=df_netflix['country'].str.split(', ')
 ).explode('country')
 # print(df_netflix_country.head())
 # print("\n--- COUNTRY EXPLODE SONRASI ---")
@@ -384,7 +385,7 @@ top_unknown_genres =unknown_df_exploded['listed_in'].value_counts().head(10)
 
 #grafik ile göster
 plt.figure(figsize = (10,5))
-sns.barplot(x=top_unknown_genres.values, y=top_unknown_genres.index,palette = "viridis")
+sns.barplot(x=top_unknown_genres.values, y=top_unknown_genres.index,color="mediumseagreen")
 plt.title("Yönetmeni Bilinmeyen İçeriklerde En Çok Görülen Türler")
 plt.xlabel("İçerik Sayısı")
 plt.ylabel("Tür")
@@ -456,7 +457,7 @@ cast_count = df_cast['cast'].value_counts().head(20)
 # print(cast_count)
 
 plt.figure(figsize = (12,6))
-sns.barplot(x=cast_count.values,y=cast_count.index,palette="viridis")
+sns.barplot(x=cast_count.values,y=cast_count.index, color="mediumpurple")
 plt.title("En Popüler İlk 20 Oyuncu (İçerik Sayısına Göre)")
 plt.xlabel("İçerik Sayısı")
 plt.ylabel("Oyuncu")
@@ -495,17 +496,83 @@ plt.legend(title="Top Tür")
 plt.tight_layout()
 # plt.show()
 
+# RATING ANALİZİ
 
+# Rating boş alanları "Unknown" yap (0 kesinlikle kullanılmamalı!)
+df_netflix["rating"] = df_netflix["rating"].fillna("Unknown")
+df_netflix["rating"] = df_netflix["rating"].astype(str)
 
+# Rating Dağılımı (Countplot)
+plt.figure(figsize=(12, 6))
+sns.countplot(
+    x='rating',
+    hue='rating',
+    data=df_netflix,
+    order=df_netflix['rating'].value_counts().index
+)
+plt.title('Netflix İçeriklerinin Rating Dağılımı')
+plt.xlabel('Rating')
+plt.ylabel('İçerik Sayısı')
+plt.xticks(rotation=45)
+plt.tight_layout()
+plt.show()
 
+# TÜRLERE GÖRE EN POPÜLER 10 TÜR (RATING DAĞILIMI)
 
+df_rating = df_netflix.copy()
 
+# Türleri explode et
+df_rating['listed_in_split'] = df_rating['listed_in'].apply(
+    lambda x: x if isinstance(x, list) else str(x).split(', ')
+)
+df_rating = df_rating.explode('listed_in_split')
 
+# EN POPÜLER 10 tür
+top10_genres = df_rating['listed_in_split'].value_counts().head(10).index
 
+# popüler türlere filtre
+df_top10 = df_rating[df_rating['listed_in_split'].isin(top10_genres)]
 
+# pivot tablo: tür x rating
+genre_rating_top10 = df_top10.pivot_table(
+    index='listed_in_split',
+    columns='rating',
+    aggfunc='size',
+    fill_value=0
+)
 
+# stacked bar chart
+genre_rating_top10.plot(
+    kind='bar',
+    stacked=True,
+    figsize=(14, 8),
+    colormap='tab20'
+)
 
+plt.title("En Popüler 10 Türün Rating Dağılımı")
+plt.xlabel("Tür")
+plt.ylabel("İçerik Sayısı")
+plt.xticks(rotation=45, ha='right')
+plt.tight_layout()
+plt.show()
 
+# YILLARA GÖRE RATING TRENDLERİ
+
+df_recent = df_netflix[df_netflix['release_year'] >= 1990]
+
+plt.figure(figsize=(14, 7))
+sns.countplot(
+    x='release_year',
+    hue='rating',
+    data=df_recent,
+    palette="tab10"
+)
+plt.title('1990 Sonrası Yıllara Göre Rating Dağılımları')
+plt.xlabel('Yıl')
+plt.ylabel('İçerik Sayısı')
+plt.xticks(rotation=45)
+plt.tight_layout()
+plt.show()
 
 
 
