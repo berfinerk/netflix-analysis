@@ -304,29 +304,30 @@ df_netflix_country = df_netflix.assign(
 #en çok içerik üreten 10 ülke(film dizi karışık)
 top10 = df_netflix_country['country'].value_counts().head(10)
 
-plt.figure(figsize = (12,6))
-sns.barplot(x=top10.values,y=top10.index)
-plt.title("En çok içerik üreten ilk 10 ülke")
-plt.xlabel("İçerik Sayısı")
-plt.ylabel("Ülke")
+# plt.figure(figsize = (12,6))
+# sns.barplot(x=top10.values,y=top10.index)
+# plt.title("En çok içerik üreten ilk 10 ülke")
+# plt.xlabel("İçerik Sayısı")
+# plt.ylabel("Ülke")
 # plt.show()
 
+
+
 #film ve dizi ayrı ayrı ülke analizi
-movies = df_netflix_country[df_netflix_country["type"] == "Movie"]
-top10_movies = movies['country'].value_counts().head(10)
-#diziler
-shows = df_netflix_country[df_netflix_country["type"] == "TV Show"]
-top10_shows = shows['country'].value_counts().head(10)
-#yan yana grafik
-fig, ax = plt.subplots(1,2,figsize=(12,6))
-sns.barplot(x=top10_movies.values, y=top10_movies.index, ax=ax[0])
-ax[0].set_title("En çok Film üreten Ülkeler")
-ax[0].set_xlabel("Film Sayısı")
-
-sns.barplot(x=top10_shows.values, y=top10_shows.index, ax=ax[1])
-ax[1].set_title("En çok Dizi Üreten Ülkeler")
-ax[1].set_xlabel("Dizi Sayısı")
-
+# movies = df_netflix_country[df_netflix_country["type"] == "Movie"]
+# top10_movies = movies['country'].value_counts().head(10)
+# #diziler
+# shows = df_netflix_country[df_netflix_country["type"] == "TV Show"]
+# top10_shows = shows['country'].value_counts().head(10)
+# #yan yana grafik
+# fig, ax = plt.subplots(1,2,figsize=(12,6))
+# sns.barplot(x=top10_movies.values, y=top10_movies.index, ax=ax[0])
+# ax[0].set_title("En çok Film üreten Ülkeler")
+# ax[0].set_xlabel("Film Sayısı")
+#
+# sns.barplot(x=top10_shows.values, y=top10_shows.index, ax=ax[1])
+# ax[1].set_title("En çok Dizi Üreten Ülkeler")
+# ax[1].set_xlabel("Dizi Sayısı")
 # plt.tight_layout()
 # plt.show()
 
@@ -338,19 +339,20 @@ country_genre_matrix = df_netflix_country.pivot_table(
     values =categories, #drama,action vb tür
     aggfunc="sum"
 )
-#en çok içeriği olan ilk 10 ülke
-top10_countries = df_netflix_country.country.value_counts().head(10).index
-country_genre_top10 = country_genre_matrix.loc[top10_countries]
-
-plt.figure(figsize = (14,6))
-sns.heatmap(country_genre_top10, cmap="Reds", annot=True, fmt="d")
-plt.title("En Çok İçerik Üreten İlk 10 Ülkenin Tür Dağılımı Isı Haritası")
-plt.xlabel("Tür")
-plt.ylabel("Ülke")
-plt.tight_layout()
+# #en çok içeriği olan ilk 10 ülke
+# top10_countries = df_netflix_country.country.value_counts().head(10).index
+# country_genre_top10 = country_genre_matrix.loc[top10_countries]
+#
+# plt.figure(figsize = (14,6))
+# sns.heatmap(country_genre_top10, cmap="Reds", annot=True, fmt="d")
+# plt.title("En Çok İçerik Üreten İlk 10 Ülkenin Tür Dağılımı Isı Haritası")
+# plt.xlabel("Tür")
+# plt.ylabel("Ülke")
+# plt.tight_layout()
 # plt.show()
 
-#yönetmen başına içerik sayısı
+
+# #yönetmen başına içerik sayısı
 
 #eksik yönetmenleri doldur
 df_netflix['director'] = df_netflix['director'].fillna('Bilinmiyor')
@@ -365,12 +367,12 @@ df_director = df_director.explode('director')
 #yönetmen başına içerik sayısı
 director_count = df_director['director'].value_counts().reset_index()
 director_count.columns = ['director', 'content_count']
-
-# print(director_count.head(10))
-#Daha çok şöyle bir bilgi olur:
-# “Veri setinde yönetmen bilgisi %X oranında eksik olduğu için yönetmen bazlı analiz sınırlıdır.”
-# “Yine de mevcut veriler içinde en çok içerik üreten birkaç yönetmen şunlardır…”
-
+print(director_count.head(10))
+# #Daha çok şöyle bir bilgi olur:
+# # “Veri setinde yönetmen bilgisi %X oranında eksik olduğu için yönetmen bazlı analiz sınırlıdır.”
+# # “Yine de mevcut veriler içinde en çok içerik üreten birkaç yönetmen şunlardır…”
+#
+#
 
 #yönetmeni bilinmeyen içerikler hangi türlerde daha fazla
 
@@ -382,64 +384,62 @@ unknown_df_exploded = unknown_df.explode('listed_in')
 top_unknown_genres =unknown_df_exploded['listed_in'].value_counts().head(10)
 # print("Yönetmeni bilinmeyen içeriklerde en çok görülen türler:")
 # print(top_unknown_genres)
-
-#grafik ile göster
-plt.figure(figsize = (10,5))
-sns.barplot(x=top_unknown_genres.values, y=top_unknown_genres.index,color="mediumseagreen")
-plt.title("Yönetmeni Bilinmeyen İçeriklerde En Çok Görülen Türler")
-plt.xlabel("İçerik Sayısı")
-plt.ylabel("Tür")
-plt.tight_layout()
+#
+# #grafik ile göster
+# plt.figure(figsize = (10,5))
+# sns.barplot(x=top_unknown_genres.values, y=top_unknown_genres.index,color="mediumseagreen")
+# plt.title("Yönetmeni Bilinmeyen İçeriklerde En Çok Görülen Türler")
+# plt.xlabel("İçerik Sayısı")
+# plt.ylabel("Tür")
+# plt.tight_layout()
 # plt.show()
-
+#
 #Grafik veya tablo yorumunu buna göre açıkla:
 # “Sadece yönetmen bilgisi olan içerikler üzerinden analiz yapılmıştır.”
 
 #bilinmeyen yönetmenleri çıkar
-df_known_directors = df_director[df_director['director'] != 'Unknown']
-#her yönetmenin en çok içerik ürettiği türü bul
-results = []
-for director_name in df_known_directors['director'].unique():
-    #bu yönetmenin tüm içerikleri
-    director_contents = df_known_directors[df_known_directors['director'] == director_name]
-
-    #tür bazında toplam içerik sayısı
-    genre_counts = director_contents[categories].sum()
-
-    #en çok içerik ürettiği tür
-    top_genre = genre_counts.idxmax()
-    count = genre_counts.max()
-
-    results.append({
-        'director': director_name,
-        'top_genre': top_genre,
-        'content_count': count,
-    })
-#dataframe oluştur
-director_top_genre_df = pd.DataFrame(results)
-#ilk 10 yönetmeni göster
-# print(director_top_genre_df.sort_values(by='content_count', ascending=False).head(10))
-
-#en çok içerik üreten 10 yönetmeni al
-top10_directors = director_top_genre_df.sort_values('content_count', ascending=False).head(10)
-top10_directors = top10_directors.sort_values('content_count', ascending=True)#yatay bar için
-
-
-plt.figure(figsize = (12,6))
-sns.barplot(
-    x='content_count',
-    y='director',
-    data=top10_directors,
-    hue='top_genre',  # sadece en yüksek tür
-    dodge=False,  # tek bar
-    palette="tab10"
-
-)
-#başlık ve etiketler
-plt.title("Top 10 Yönetmenin En Çok Ürettiği Tür ve İçerik Sayısı")
-plt.xlabel("İçerik Sayısı")
-plt.ylabel("Yönetmen")
-plt.legend(title="Top Tür")
+# df_known_directors = df_director[df_director['director'] != 'Unknown']
+# #her yönetmenin en çok içerik ürettiği türü bul
+# results = []
+# for director_name in df_known_directors['director'].unique():
+# #     #bu yönetmenin tüm içerikleri
+#      director_contents = df_known_directors[df_known_directors['director'] == director_name]
+#
+#      #tür bazında toplam içerik sayısı
+#      genre_counts = director_contents[categories].sum()
+#      top_genre = genre_counts.idxmax()
+#      count = genre_counts.max()
+#
+#      results.append({
+#         'director': director_name,
+#         'top_genre': top_genre,
+#         'content_count': count,
+#     })
+# # #dataframe oluştur
+# director_top_genre_df = pd.DataFrame(results)
+# #ilk 10 yönetmeni göster
+# # print(director_top_genre_df.sort_values(by='content_count', ascending=False).head(10))
+#
+# #en çok içerik üreten 10 yönetmeni al
+# top10_directors = director_top_genre_df.sort_values('content_count', ascending=False).head(10)
+# top10_directors = top10_directors.sort_values('content_count', ascending=True)#yatay bar için
+#
+#
+# plt.figure(figsize = (12,6))
+# sns.barplot(
+#     x='content_count',
+#     y='director',
+#     data=top10_directors,
+#     hue='top_genre',  # sadece en yüksek tür
+#     dodge=False,  # tek bar
+#     palette="tab10"
+#
+# )
+# #başlık ve etiketler
+# plt.title("Top 10 Yönetmenin En Çok Ürettiği Tür ve İçerik Sayısı")
+# plt.xlabel("İçerik Sayısı")
+# plt.ylabel("Yönetmen")
+# plt.legend(title="Top Tür")
 # plt.tight_layout()
 # plt.show()
 
@@ -452,16 +452,16 @@ df_cast = df_known_cast.copy()
 df_cast['cast'] = df_cast['cast'].str.split(',')
 df_cast = df_cast.explode('cast')
 
-#oyuncu başına içerik sayısı
-cast_count = df_cast['cast'].value_counts().head(20)
-# print(cast_count)
-
-plt.figure(figsize = (12,6))
-sns.barplot(x=cast_count.values,y=cast_count.index, color="mediumpurple")
-plt.title("En Popüler İlk 20 Oyuncu (İçerik Sayısına Göre)")
-plt.xlabel("İçerik Sayısı")
-plt.ylabel("Oyuncu")
-plt.tight_layout()
+# #oyuncu başına içerik sayısı
+# cast_count = df_cast['cast'].value_counts().head(20)
+# # print(cast_count)
+#
+# plt.figure(figsize = (12,6))
+# sns.barplot(x=cast_count.values,y=cast_count.index, color="mediumpurple")
+# plt.title("En Popüler İlk 20 Oyuncu (İçerik Sayısına Göre)")
+# plt.xlabel("İçerik Sayısı")
+# plt.ylabel("Oyuncu")
+# plt.tight_layout()
 # plt.show()
 
 #oyuncuların en çok oynadığı türler
@@ -477,23 +477,24 @@ for actor in df_cast['cast'].unique():
         'content_count': count,
     })
 actor_top_genre_df = pd.DataFrame(results)
+
 #en popüler 10 oyuncu al
 top10_actors = actor_top_genre_df.sort_values('content_count', ascending=False).head(10)
 top10_actors = top10_actors.sort_values('content_count', ascending=True)
 # print(top10_actors)
 
-plt.figure(figsize = (12,6))
-sns.barplot(
-    x='content_count',
-    y='actor',
-    data=top10_actors,
-    hue='top_genre', dodge=False, palette="tab10"
-)
-plt.title("En Popüler 10 Oyuncu ve En Çok Yer Aldıkları Tür")
-plt.xlabel("İçerik Sayısı")
-plt.ylabel("Oyuncu")
-plt.legend(title="Top Tür")
-plt.tight_layout()
+# plt.figure(figsize = (12,6))
+# sns.barplot(
+#     x='content_count',
+#     y='actor',
+#     data=top10_actors,
+#     hue='top_genre', dodge=False, palette="tab10"
+# )
+# plt.title("En Popüler 10 Oyuncu ve En Çok Yer Aldıkları Tür")
+# plt.xlabel("İçerik Sayısı")
+# plt.ylabel("Oyuncu")
+# plt.legend(title="Top Tür")
+# plt.tight_layout()
 # plt.show()
 
 # RATING ANALİZİ
@@ -503,19 +504,19 @@ df_netflix["rating"] = df_netflix["rating"].fillna("Unknown")
 df_netflix["rating"] = df_netflix["rating"].astype(str)
 
 # Rating Dağılımı (Countplot)
-plt.figure(figsize=(12, 6))
-sns.countplot(
-    x='rating',
-    hue='rating',
-    data=df_netflix,
-    order=df_netflix['rating'].value_counts().index
-)
-plt.title('Netflix İçeriklerinin Rating Dağılımı')
-plt.xlabel('Rating')
-plt.ylabel('İçerik Sayısı')
-plt.xticks(rotation=45)
-plt.tight_layout()
-plt.show()
+# plt.figure(figsize=(12, 6))
+# sns.countplot(
+#     x='rating',
+#     hue='rating',
+#     data=df_netflix,
+#     order=df_netflix['rating'].value_counts().index
+# )
+# plt.title('Netflix İçeriklerinin Rating Dağılımı')
+# plt.xlabel('Rating')
+# plt.ylabel('İçerik Sayısı')
+# plt.xticks(rotation=45)
+# plt.tight_layout()
+# plt.show()
 
 # TÜRLERE GÖRE EN POPÜLER 10 TÜR (RATING DAĞILIMI)
 
@@ -533,46 +534,46 @@ top10_genres = df_rating['listed_in_split'].value_counts().head(10).index
 # popüler türlere filtre
 df_top10 = df_rating[df_rating['listed_in_split'].isin(top10_genres)]
 
-# pivot tablo: tür x rating
-genre_rating_top10 = df_top10.pivot_table(
-    index='listed_in_split',
-    columns='rating',
-    aggfunc='size',
-    fill_value=0
-)
-
-# stacked bar chart
-genre_rating_top10.plot(
-    kind='bar',
-    stacked=True,
-    figsize=(14, 8),
-    colormap='tab20'
-)
-
-plt.title("En Popüler 10 Türün Rating Dağılımı")
-plt.xlabel("Tür")
-plt.ylabel("İçerik Sayısı")
-plt.xticks(rotation=45, ha='right')
-plt.tight_layout()
-plt.show()
+# # pivot tablo: tür x rating
+# genre_rating_top10 = df_top10.pivot_table(
+#     index='listed_in_split',
+#     columns='rating',
+#     aggfunc='size',
+#     fill_value=0
+# )
+#
+# # stacked bar chart
+# genre_rating_top10.plot(
+#     kind='bar',
+#     stacked=True,
+#     figsize=(14, 8),
+#     colormap='tab20'
+# )
+#
+# plt.title("En Popüler 10 Türün Rating Dağılımı")
+# plt.xlabel("Tür")
+# plt.ylabel("İçerik Sayısı")
+# plt.xticks(rotation=45, ha='right')
+# plt.tight_layout()
+# plt.show()
 
 # YILLARA GÖRE RATING TRENDLERİ
 
 df_recent = df_netflix[df_netflix['release_year'] >= 2000]
 
-plt.figure(figsize=(14, 7))
-sns.countplot(
-    x='release_year',
-    hue='rating',
-    data=df_recent,
-    palette="tab10"
-)
-plt.title('2000 Sonrası Yıllara Göre Rating Dağılımları')
-plt.xlabel('Yıl')
-plt.ylabel('İçerik Sayısı')
-plt.xticks(rotation=45)
-plt.tight_layout()
-plt.show()
+# plt.figure(figsize=(14, 7))
+# sns.countplot(
+#     x='release_year',
+#     hue='rating',
+#     data=df_recent,
+#     palette="tab10"
+# )
+# plt.title('2000 Sonrası Yıllara Göre Rating Dağılımları')
+# plt.xlabel('Yıl')
+# plt.ylabel('İçerik Sayısı')
+# plt.xticks(rotation=45)
+# plt.tight_layout()
+# plt.show()
 
 
 
